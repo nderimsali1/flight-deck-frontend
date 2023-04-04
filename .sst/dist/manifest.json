@@ -1,0 +1,257 @@
+{
+  "version": "29.0.0",
+  "artifacts": {
+    "dev-tarox-evaluation-app-TaroxEvaluation.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "dev-tarox-evaluation-app-TaroxEvaluation.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "dev-tarox-evaluation-app-TaroxEvaluation": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://559763560016/eu-central-1",
+      "properties": {
+        "templateFile": "dev-tarox-evaluation-app-TaroxEvaluation.template.json",
+        "tags": {
+          "sst:app": "tarox-evaluation-app",
+          "sst:stage": "dev"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::559763560016:role/cdk-hnb659fds-deploy-role-559763560016-eu-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::559763560016:role/cdk-hnb659fds-cfn-exec-role-559763560016-eu-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-559763560016-eu-central-1/120c7d15399bdf133feb2009de37fa1fc8303b16e8ff97852c042eaf1526fe87.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "dev-tarox-evaluation-app-TaroxEvaluation.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::559763560016:role/cdk-hnb659fds-lookup-role-559763560016-eu-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "dev-tarox-evaluation-app-TaroxEvaluation.assets"
+      ],
+      "metadata": {
+        "/dev-tarox-evaluation-app-TaroxEvaluation": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "sst:app",
+                "Value": "tarox-evaluation-app"
+              },
+              {
+                "Key": "sst:stage",
+                "Value": "dev"
+              }
+            ]
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerServiceRole41AEC181"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomResourceHandlerE8FB56BA"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/zone/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "zoneEB40FF1E"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteAwsCliLayer8C13AD85"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3Bucket435057DB"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3BucketPolicy2A15393E"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3BucketAutoDeleteObjectsCustomResource5ABA7BBB"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleDefaultPolicy45ED989A"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCertificateCertificateRequestorFunction648C3A55"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCertificateCertificateRequestorResourceC455335E"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3UploaderServiceRoleDF0C5BFF"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3UploaderServiceRoleDefaultPolicy1A4348B9"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3Uploader59E17528"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3HandlerServiceRole901E6E43"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3HandlerServiceRoleDefaultPolicy47F5E462"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3HandlerBDD0DB92"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Deployment/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteS3Deployment595CCC9A"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCloudFrontFunctionC61FB1AF"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Origin1/S3Origin/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteDistributionOrigin1S3Origin6F73794F"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteDistribution90D303F1"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidatorPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCloudFrontInvalidatorPolicy208319DD"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidator/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteCloudFrontInvalidator378FAE0B"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecord/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteAliasRecord4F27A661"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecordAAAA/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteAliasRecordAAAA1D4536B8"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Parameter_url/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StaticSiteParameterurl8BC47FFD"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/AWSCloudFrontPartitionHostedZoneIdMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWSCloudFrontPartitionHostedZoneIdMap"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/SSTStackOutputSSTMetadata": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SSTMetadata"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/dev-tarox-evaluation-app-TaroxEvaluation/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "dev-tarox-evaluation-app-TaroxEvaluation"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

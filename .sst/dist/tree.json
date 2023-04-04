@@ -1,0 +1,1711 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "dev-tarox-evaluation-app-TaroxEvaluation": {
+        "id": "dev-tarox-evaluation-app-TaroxEvaluation",
+        "path": "dev-tarox-evaluation-app-TaroxEvaluation",
+        "children": {
+          "CustomResourceHandler": {
+            "id": "CustomResourceHandler",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ],
+                        "tags": [
+                          {
+                            "key": "sst:app",
+                            "value": "tarox-evaluation-app"
+                          },
+                          {
+                            "key": "sst:stage",
+                            "value": "dev"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.62.2"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.62.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/CustomResourceHandler/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+                      "s3Key": "631a21022eddd663811f35d111ed7279d26312deb828aa8f1f3723f8b746de3e.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "CustomResourceHandlerServiceRole41AEC181",
+                        "Arn"
+                      ]
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 1024,
+                    "runtime": "nodejs16.x",
+                    "tags": [
+                      {
+                        "key": "sst:app",
+                        "value": "tarox-evaluation-app"
+                      },
+                      {
+                        "key": "sst:stage",
+                        "value": "dev"
+                      }
+                    ],
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.62.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.62.2"
+            }
+          },
+          "zone": {
+            "id": "zone",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/zone",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/zone/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Route53::HostedZone",
+                  "aws:cdk:cloudformation:props": {
+                    "hostedZoneTags": [
+                      {
+                        "key": "sst:app",
+                        "value": "tarox-evaluation-app"
+                      },
+                      {
+                        "key": "sst:stage",
+                        "value": "dev"
+                      }
+                    ],
+                    "name": "n.mantaro.dev."
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_route53.CfnHostedZone",
+                  "version": "2.70.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_route53.HostedZone",
+              "version": "2.70.0"
+            }
+          },
+          "StaticSite": {
+            "id": "StaticSite",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite",
+            "children": {
+              "AwsCliLayer": {
+                "id": "AwsCliLayer",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer",
+                "children": {
+                  "Code": {
+                    "id": "Code",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AwsCliLayer/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::LayerVersion",
+                      "aws:cdk:cloudformation:props": {
+                        "content": {
+                          "s3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+                          "s3Key": "679066847909511778943bd4d081cd2468b890d5fc1272dd1fb101adb17c9b0d.zip"
+                        },
+                        "description": "/opt/awscli/aws"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnLayerVersion",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.lambda_layer_awscli.AwsCliLayer",
+                  "version": "2.62.2"
+                }
+              },
+              "Asset0": {
+                "id": "Asset0",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Asset0",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Asset0/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Asset0/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.62.2"
+                }
+              },
+              "AssetFilenames": {
+                "id": "AssetFilenames",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AssetFilenames",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AssetFilenames/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AssetFilenames/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.62.2"
+                }
+              },
+              "S3Bucket": {
+                "id": "S3Bucket",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        },
+                        "tags": [
+                          {
+                            "key": "aws-cdk:auto-delete-objects",
+                            "value": "true"
+                          },
+                          {
+                            "key": "sst:app",
+                            "value": "tarox-evaluation-app"
+                          },
+                          {
+                            "key": "sst:stage",
+                            "value": "dev"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "StaticSiteS3Bucket435057DB"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:GetBucket*",
+                                    "s3:List*",
+                                    "s3:DeleteObject*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": {
+                                      "Fn::GetAtt": [
+                                        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                        "Arn"
+                                      ]
+                                    }
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "StaticSiteS3Bucket435057DB",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "StaticSiteS3Bucket435057DB",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": "s3:GetObject",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "CanonicalUser": {
+                                      "Fn::GetAtt": [
+                                        "StaticSiteDistributionOrigin1S3Origin6F73794F",
+                                        "S3CanonicalUserId"
+                                      ]
+                                    }
+                                  },
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StaticSiteS3Bucket435057DB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "AutoDeleteObjectsCustomResource": {
+                    "id": "AutoDeleteObjectsCustomResource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/AutoDeleteObjectsCustomResource",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Bucket/AutoDeleteObjectsCustomResource/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CustomResource",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.62.2"
+                }
+              },
+              "HostedZone": {
+                "id": "HostedZone",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/HostedZone",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.62.2"
+                }
+              },
+              "Certificate": {
+                "id": "Certificate",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate",
+                "children": {
+                  "CertificateRequestorFunction": {
+                    "id": "CertificateRequestorFunction",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction",
+                    "children": {
+                      "ServiceRole": {
+                        "id": "ServiceRole",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole",
+                        "children": {
+                          "ImportServiceRole": {
+                            "id": "ImportServiceRole",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/ImportServiceRole",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.Resource",
+                              "version": "2.62.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                              "aws:cdk:cloudformation:props": {
+                                "assumeRolePolicyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Principal": {
+                                        "Service": "lambda.amazonaws.com"
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "managedPolicyArns": [
+                                  {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                      ]
+                                    ]
+                                  }
+                                ],
+                                "tags": [
+                                  {
+                                    "key": "sst:app",
+                                    "value": "tarox-evaluation-app"
+                                  },
+                                  {
+                                    "key": "sst:stage",
+                                    "value": "dev"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                              "version": "2.62.2"
+                            }
+                          },
+                          "DefaultPolicy": {
+                            "id": "DefaultPolicy",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/DefaultPolicy",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/ServiceRole/DefaultPolicy/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                  "aws:cdk:cloudformation:props": {
+                                    "policyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": [
+                                            "acm:RequestCertificate",
+                                            "acm:DescribeCertificate",
+                                            "acm:DeleteCertificate",
+                                            "acm:AddTagsToCertificate"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": "*"
+                                        },
+                                        {
+                                          "Action": "route53:GetChange",
+                                          "Effect": "Allow",
+                                          "Resource": "*"
+                                        },
+                                        {
+                                          "Action": "route53:changeResourceRecordSets",
+                                          "Condition": {
+                                            "ForAllValues:StringEquals": {
+                                              "route53:ChangeResourceRecordSetsRecordTypes": [
+                                                "CNAME"
+                                              ],
+                                              "route53:ChangeResourceRecordSetsActions": [
+                                                "UPSERT"
+                                              ]
+                                            },
+                                            "ForAllValues:StringLike": {
+                                              "route53:ChangeResourceRecordSetsNormalizedRecordNames": [
+                                                "*.n.mantaro.dev"
+                                              ]
+                                            }
+                                          },
+                                          "Effect": "Allow",
+                                          "Resource": {
+                                            "Fn::Join": [
+                                              "",
+                                              [
+                                                "arn:",
+                                                {
+                                                  "Ref": "AWS::Partition"
+                                                },
+                                                ":route53:::hostedzone/Z00814143B9EJIERPRYV9"
+                                              ]
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "policyName": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleDefaultPolicy45ED989A",
+                                    "roles": [
+                                      {
+                                        "Ref": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                  "version": "2.62.2"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Policy",
+                              "version": "2.62.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Role",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "Code": {
+                        "id": "Code",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/Code",
+                        "children": {
+                          "Stage": {
+                            "id": "Stage",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/Code/Stage",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.AssetStaging",
+                              "version": "2.62.2"
+                            }
+                          },
+                          "AssetBucket": {
+                            "id": "AssetBucket",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/Code/AssetBucket",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                              "version": "2.62.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorFunction/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                          "aws:cdk:cloudformation:props": {
+                            "code": {
+                              "s3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+                              "s3Key": "a1466b91ba8942c1f5251540844c3af7879992dead6cbbd88e38bfb77a07ad8d.zip"
+                            },
+                            "role": {
+                              "Fn::GetAtt": [
+                                "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33",
+                                "Arn"
+                              ]
+                            },
+                            "handler": "index.certificateRequestHandler",
+                            "runtime": "nodejs14.x",
+                            "tags": [
+                              {
+                                "key": "sst:app",
+                                "value": "tarox-evaluation-app"
+                              },
+                              {
+                                "key": "sst:stage",
+                                "value": "dev"
+                              }
+                            ],
+                            "timeout": 900
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.Function",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "CertificateRequestorResource": {
+                    "id": "CertificateRequestorResource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorResource",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Certificate/CertificateRequestorResource/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CustomResource",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.62.2"
+                }
+              },
+              "S3Uploader": {
+                "id": "S3Uploader",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole",
+                    "children": {
+                      "ImportServiceRole": {
+                        "id": "ImportServiceRole",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/ImportServiceRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ],
+                            "tags": [
+                              {
+                                "key": "sst:app",
+                                "value": "tarox-evaluation-app"
+                              },
+                              {
+                                "key": "sst:stage",
+                                "value": "dev"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject",
+                                        "s3:PutObjectLegalHold",
+                                        "s3:PutObjectRetention",
+                                        "s3:PutObjectTagging",
+                                        "s3:PutObjectVersionTagging",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StaticSiteS3Bucket435057DB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "StaticSiteS3Bucket435057DB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1"
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "StaticSiteS3UploaderServiceRoleDefaultPolicy1A4348B9",
+                                "roles": [
+                                  {
+                                    "Ref": "StaticSiteS3UploaderServiceRoleDF0C5BFF"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.62.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Code": {
+                    "id": "Code",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Uploader/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "s3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+                          "s3Key": "5314dd0b83a9c16d227872e4b881e96d2361ae01b02d8bdc3b24c30fd31aa758.zip"
+                        },
+                        "role": {
+                          "Fn::GetAtt": [
+                            "StaticSiteS3UploaderServiceRoleDF0C5BFF",
+                            "Arn"
+                          ]
+                        },
+                        "handler": "s3-upload.handler",
+                        "layers": [
+                          {
+                            "Ref": "StaticSiteAwsCliLayer8C13AD85"
+                          }
+                        ],
+                        "memorySize": 1024,
+                        "runtime": "python3.7",
+                        "tags": [
+                          {
+                            "key": "sst:app",
+                            "value": "tarox-evaluation-app"
+                          },
+                          {
+                            "key": "sst:stage",
+                            "value": "dev"
+                          }
+                        ],
+                        "timeout": 900
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.Function",
+                  "version": "2.62.2"
+                }
+              },
+              "S3Handler": {
+                "id": "S3Handler",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler",
+                "children": {
+                  "ServiceRole": {
+                    "id": "ServiceRole",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole",
+                    "children": {
+                      "ImportServiceRole": {
+                        "id": "ImportServiceRole",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/ImportServiceRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "lambda.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "managedPolicyArns": [
+                              {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                  ]
+                                ]
+                              }
+                            ],
+                            "tags": [
+                              {
+                                "key": "sst:app",
+                                "value": "tarox-evaluation-app"
+                              },
+                              {
+                                "key": "sst:stage",
+                                "value": "dev"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/ServiceRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*",
+                                        "s3:DeleteObject*",
+                                        "s3:PutObject",
+                                        "s3:PutObjectLegalHold",
+                                        "s3:PutObjectRetention",
+                                        "s3:PutObjectTagging",
+                                        "s3:PutObjectVersionTagging",
+                                        "s3:Abort*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StaticSiteS3Bucket435057DB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "StaticSiteS3Bucket435057DB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetObject*",
+                                        "s3:GetBucket*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1"
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": "lambda:InvokeFunction",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "StaticSiteS3Uploader59E17528",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "StaticSiteS3Uploader59E17528",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              ":*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "StaticSiteS3HandlerServiceRoleDefaultPolicy47F5E462",
+                                "roles": [
+                                  {
+                                    "Ref": "StaticSiteS3HandlerServiceRole901E6E43"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.62.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Code": {
+                    "id": "Code",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/Code",
+                    "children": {
+                      "Stage": {
+                        "id": "Stage",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/Code/Stage",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.AssetStaging",
+                          "version": "2.62.2"
+                        }
+                      },
+                      "AssetBucket": {
+                        "id": "AssetBucket",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/Code/AssetBucket",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                      "version": "2.62.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Handler/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "code": {
+                          "s3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+                          "s3Key": "5314dd0b83a9c16d227872e4b881e96d2361ae01b02d8bdc3b24c30fd31aa758.zip"
+                        },
+                        "role": {
+                          "Fn::GetAtt": [
+                            "StaticSiteS3HandlerServiceRole901E6E43",
+                            "Arn"
+                          ]
+                        },
+                        "environment": {
+                          "variables": {
+                            "UPLOADER_FUNCTION_NAME": {
+                              "Ref": "StaticSiteS3Uploader59E17528"
+                            }
+                          }
+                        },
+                        "handler": "s3-handler.handler",
+                        "layers": [
+                          {
+                            "Ref": "StaticSiteAwsCliLayer8C13AD85"
+                          }
+                        ],
+                        "memorySize": 1024,
+                        "runtime": "python3.7",
+                        "tags": [
+                          {
+                            "key": "sst:app",
+                            "value": "tarox-evaluation-app"
+                          },
+                          {
+                            "key": "sst:stage",
+                            "value": "dev"
+                          }
+                        ],
+                        "timeout": 900
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.Function",
+                  "version": "2.62.2"
+                }
+              },
+              "S3Deployment": {
+                "id": "S3Deployment",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Deployment",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/S3Deployment/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.62.2"
+                }
+              },
+              "CloudFrontFunction": {
+                "id": "CloudFrontFunction",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontFunction",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontFunction/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::Function",
+                      "aws:cdk:cloudformation:props": {
+                        "functionCode": "\nfunction handler(event) {\n  var request = event.request;\n  var uri = request.uri;\n  \n  if (uri.endsWith(\"/\")) {\n    request.uri += \"index.html\";\n  } else if (!uri.split(\"/\").pop().includes(\".\")) {\n    request.uri += \".html\";\n  }\n\n  return request;\n}\n          ",
+                        "functionConfig": {
+                          "comment": "eu-central-1devtaroxevaluationapicSiteCloudFrontFunction70495E47",
+                          "runtime": "cloudfront-js-1.0"
+                        },
+                        "name": "eu-central-1devtaroxevaluationapicSiteCloudFrontFunction70495E47",
+                        "autoPublish": true
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnFunction",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.Function",
+                  "version": "2.62.2"
+                }
+              },
+              "Distribution": {
+                "id": "Distribution",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution",
+                "children": {
+                  "Origin1": {
+                    "id": "Origin1",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Origin1",
+                    "children": {
+                      "S3Origin": {
+                        "id": "S3Origin",
+                        "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Origin1/S3Origin",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Origin1/S3Origin/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                              "aws:cdk:cloudformation:props": {
+                                "cloudFrontOriginAccessIdentityConfig": {
+                                  "comment": "Identity for devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                              "version": "2.62.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+                          "version": "2.62.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.1.156"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Distribution/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                      "aws:cdk:cloudformation:props": {
+                        "distributionConfig": {
+                          "enabled": true,
+                          "origins": [
+                            {
+                              "domainName": {
+                                "Fn::GetAtt": [
+                                  "StaticSiteS3Bucket435057DB",
+                                  "RegionalDomainName"
+                                ]
+                              },
+                              "id": "devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F",
+                              "s3OriginConfig": {
+                                "originAccessIdentity": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "origin-access-identity/cloudfront/",
+                                      {
+                                        "Ref": "StaticSiteDistributionOrigin1S3Origin6F73794F"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "defaultCacheBehavior": {
+                            "pathPattern": "*",
+                            "targetOriginId": "devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F",
+                            "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                            "compress": true,
+                            "viewerProtocolPolicy": "redirect-to-https",
+                            "functionAssociations": [
+                              {
+                                "functionArn": {
+                                  "Fn::GetAtt": [
+                                    "StaticSiteCloudFrontFunctionC61FB1AF",
+                                    "FunctionARN"
+                                  ]
+                                },
+                                "eventType": "viewer-request"
+                              }
+                            ]
+                          },
+                          "aliases": [
+                            "n.mantaro.dev"
+                          ],
+                          "customErrorResponses": [
+                            {
+                              "errorCode": 403,
+                              "responseCode": 200,
+                              "responsePagePath": "/index.html"
+                            },
+                            {
+                              "errorCode": 404,
+                              "responseCode": 200,
+                              "responsePagePath": "/index.html"
+                            }
+                          ],
+                          "defaultRootObject": "index.html",
+                          "httpVersion": "http2",
+                          "ipv6Enabled": true,
+                          "viewerCertificate": {
+                            "acmCertificateArn": {
+                              "Fn::GetAtt": [
+                                "StaticSiteCertificateCertificateRequestorResourceC455335E",
+                                "Arn"
+                              ]
+                            },
+                            "minimumProtocolVersion": "TLSv1.2_2021",
+                            "sslSupportMethod": "sni-only"
+                          }
+                        },
+                        "tags": [
+                          {
+                            "key": "sst:app",
+                            "value": "tarox-evaluation-app"
+                          },
+                          {
+                            "key": "sst:stage",
+                            "value": "dev"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+                  "version": "2.62.2"
+                }
+              },
+              "CloudFrontInvalidatorPolicy": {
+                "id": "CloudFrontInvalidatorPolicy",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidatorPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidatorPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "cloudfront:GetInvalidation",
+                                "cloudfront:CreateInvalidation"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":cloudfront::559763560016:distribution/",
+                                    {
+                                      "Ref": "StaticSiteDistribution90D303F1"
+                                    }
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "StaticSiteCloudFrontInvalidatorPolicy208319DD",
+                        "roles": [
+                          {
+                            "Ref": "CustomResourceHandlerServiceRole41AEC181"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.62.2"
+                }
+              },
+              "CloudFrontInvalidator": {
+                "id": "CloudFrontInvalidator",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidator",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/CloudFrontInvalidator/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.62.2"
+                }
+              },
+              "AliasRecord": {
+                "id": "AliasRecord",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecord",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecord/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Route53::RecordSet",
+                      "aws:cdk:cloudformation:props": {
+                        "name": "n.mantaro.dev.",
+                        "type": "A",
+                        "aliasTarget": {
+                          "hostedZoneId": {
+                            "Fn::FindInMap": [
+                              "AWSCloudFrontPartitionHostedZoneIdMap",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              "zoneId"
+                            ]
+                          },
+                          "dnsName": {
+                            "Fn::GetAtt": [
+                              "StaticSiteDistribution90D303F1",
+                              "DomainName"
+                            ]
+                          }
+                        },
+                        "hostedZoneId": "Z00814143B9EJIERPRYV9"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_route53.CfnRecordSet",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_route53.ARecord",
+                  "version": "2.62.2"
+                }
+              },
+              "AliasRecordAAAA": {
+                "id": "AliasRecordAAAA",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecordAAAA",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/AliasRecordAAAA/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Route53::RecordSet",
+                      "aws:cdk:cloudformation:props": {
+                        "name": "n.mantaro.dev.",
+                        "type": "AAAA",
+                        "aliasTarget": {
+                          "hostedZoneId": {
+                            "Fn::FindInMap": [
+                              "AWSCloudFrontPartitionHostedZoneIdMap",
+                              {
+                                "Ref": "AWS::Partition"
+                              },
+                              "zoneId"
+                            ]
+                          },
+                          "dnsName": {
+                            "Fn::GetAtt": [
+                              "StaticSiteDistribution90D303F1",
+                              "DomainName"
+                            ]
+                          }
+                        },
+                        "hostedZoneId": "Z00814143B9EJIERPRYV9"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_route53.CfnRecordSet",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_route53.AaaaRecord",
+                  "version": "2.62.2"
+                }
+              },
+              "Parameter_url": {
+                "id": "Parameter_url",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Parameter_url",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "dev-tarox-evaluation-app-TaroxEvaluation/StaticSite/Parameter_url/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                      "aws:cdk:cloudformation:props": {
+                        "type": "String",
+                        "value": "https://n.mantaro.dev",
+                        "name": "/sst/tarox-evaluation-app/dev/StaticSite/StaticSite/url",
+                        "tags": {
+                          "sst:app": "tarox-evaluation-app",
+                          "sst:stage": "dev"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                      "version": "2.62.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+                  "version": "2.62.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.156"
+            }
+          },
+          "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
+            "id": "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "children": {
+              "Staging": {
+                "id": "Staging",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.AssetStaging",
+                  "version": "2.62.2"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.62.2"
+                }
+              },
+              "Handler": {
+                "id": "Handler",
+                "path": "dev-tarox-evaluation-app-TaroxEvaluation/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.62.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CustomResourceProvider",
+              "version": "2.62.2"
+            }
+          },
+          "AWSCloudFrontPartitionHostedZoneIdMap": {
+            "id": "AWSCloudFrontPartitionHostedZoneIdMap",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/AWSCloudFrontPartitionHostedZoneIdMap",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnMapping",
+              "version": "2.62.2"
+            }
+          },
+          "SSTStackOutputSSTMetadata": {
+            "id": "SSTStackOutputSSTMetadata",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/SSTStackOutputSSTMetadata",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.62.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.62.2"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "dev-tarox-evaluation-app-TaroxEvaluation/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.62.2"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.62.2"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.156"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.62.2"
+    }
+  }
+}

@@ -1,0 +1,1137 @@
+{
+ "Resources": {
+  "CustomResourceHandlerServiceRole41AEC181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   }
+  },
+  "CustomResourceHandlerE8FB56BA": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "631a21022eddd663811f35d111ed7279d26312deb828aa8f1f3723f8b746de3e.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerServiceRole41AEC181",
+      "Arn"
+     ]
+    },
+    "Handler": "index.handler",
+    "MemorySize": 1024,
+    "Runtime": "nodejs16.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomResourceHandlerServiceRole41AEC181"
+   ]
+  },
+  "zoneEB40FF1E": {
+   "Type": "AWS::Route53::HostedZone",
+   "Properties": {
+    "HostedZoneTags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Name": "n.mantaro.dev."
+   }
+  },
+  "StaticSiteAwsCliLayer8C13AD85": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "679066847909511778943bd4d081cd2468b890d5fc1272dd1fb101adb17c9b0d.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   }
+  },
+  "StaticSiteS3Bucket435057DB": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "StaticSiteS3BucketPolicy2A15393E": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "StaticSiteS3Bucket435057DB"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StaticSiteS3Bucket435057DB",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "StaticSiteS3Bucket435057DB",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "StaticSiteDistributionOrigin1S3Origin6F73794F",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "StaticSiteS3Bucket435057DB",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   }
+  },
+  "StaticSiteS3BucketAutoDeleteObjectsCustomResource5ABA7BBB": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "StaticSiteS3Bucket435057DB"
+    }
+   },
+   "DependsOn": [
+    "StaticSiteS3BucketPolicy2A15393E"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   }
+  },
+  "StaticSiteCertificateCertificateRequestorFunctionServiceRoleDefaultPolicy45ED989A": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "acm:RequestCertificate",
+        "acm:DescribeCertificate",
+        "acm:DeleteCertificate",
+        "acm:AddTagsToCertificate"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "route53:GetChange",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "route53:changeResourceRecordSets",
+       "Condition": {
+        "ForAllValues:StringEquals": {
+         "route53:ChangeResourceRecordSetsRecordTypes": [
+          "CNAME"
+         ],
+         "route53:ChangeResourceRecordSetsActions": [
+          "UPSERT"
+         ]
+        },
+        "ForAllValues:StringLike": {
+         "route53:ChangeResourceRecordSetsNormalizedRecordNames": [
+          "*.n.mantaro.dev"
+         ]
+        }
+       },
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":route53:::hostedzone/Z00814143B9EJIERPRYV9"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleDefaultPolicy45ED989A",
+    "Roles": [
+     {
+      "Ref": "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33"
+     }
+    ]
+   }
+  },
+  "StaticSiteCertificateCertificateRequestorFunction648C3A55": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "a1466b91ba8942c1f5251540844c3af7879992dead6cbbd88e38bfb77a07ad8d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33",
+      "Arn"
+     ]
+    },
+    "Handler": "index.certificateRequestHandler",
+    "Runtime": "nodejs14.x",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "StaticSiteCertificateCertificateRequestorFunctionServiceRoleDefaultPolicy45ED989A",
+    "StaticSiteCertificateCertificateRequestorFunctionServiceRoleEBEE8C33"
+   ]
+  },
+  "StaticSiteCertificateCertificateRequestorResourceC455335E": {
+   "Type": "AWS::CloudFormation::CustomResource",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "StaticSiteCertificateCertificateRequestorFunction648C3A55",
+      "Arn"
+     ]
+    },
+    "DomainName": "n.mantaro.dev",
+    "HostedZoneId": "Z00814143B9EJIERPRYV9",
+    "Region": "us-east-1",
+    "Tags": {
+     "sst:app": "tarox-evaluation-app",
+     "sst:stage": "dev"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "StaticSiteS3UploaderServiceRoleDF0C5BFF": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   }
+  },
+  "StaticSiteS3UploaderServiceRoleDefaultPolicy1A4348B9": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StaticSiteS3Bucket435057DB",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "StaticSiteS3Bucket435057DB",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StaticSiteS3UploaderServiceRoleDefaultPolicy1A4348B9",
+    "Roles": [
+     {
+      "Ref": "StaticSiteS3UploaderServiceRoleDF0C5BFF"
+     }
+    ]
+   }
+  },
+  "StaticSiteS3Uploader59E17528": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "5314dd0b83a9c16d227872e4b881e96d2361ae01b02d8bdc3b24c30fd31aa758.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "StaticSiteS3UploaderServiceRoleDF0C5BFF",
+      "Arn"
+     ]
+    },
+    "Handler": "s3-upload.handler",
+    "Layers": [
+     {
+      "Ref": "StaticSiteAwsCliLayer8C13AD85"
+     }
+    ],
+    "MemorySize": 1024,
+    "Runtime": "python3.7",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "StaticSiteS3UploaderServiceRoleDefaultPolicy1A4348B9",
+    "StaticSiteS3UploaderServiceRoleDF0C5BFF"
+   ]
+  },
+  "StaticSiteS3HandlerServiceRole901E6E43": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   }
+  },
+  "StaticSiteS3HandlerServiceRoleDefaultPolicy47F5E462": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StaticSiteS3Bucket435057DB",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "StaticSiteS3Bucket435057DB",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::cdk-hnb659fds-assets-559763560016-eu-central-1/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "StaticSiteS3Uploader59E17528",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "StaticSiteS3Uploader59E17528",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StaticSiteS3HandlerServiceRoleDefaultPolicy47F5E462",
+    "Roles": [
+     {
+      "Ref": "StaticSiteS3HandlerServiceRole901E6E43"
+     }
+    ]
+   }
+  },
+  "StaticSiteS3HandlerBDD0DB92": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "5314dd0b83a9c16d227872e4b881e96d2361ae01b02d8bdc3b24c30fd31aa758.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "StaticSiteS3HandlerServiceRole901E6E43",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "UPLOADER_FUNCTION_NAME": {
+       "Ref": "StaticSiteS3Uploader59E17528"
+      }
+     }
+    },
+    "Handler": "s3-handler.handler",
+    "Layers": [
+     {
+      "Ref": "StaticSiteAwsCliLayer8C13AD85"
+     }
+    ],
+    "MemorySize": 1024,
+    "Runtime": "python3.7",
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ],
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "StaticSiteS3HandlerServiceRoleDefaultPolicy47F5E462",
+    "StaticSiteS3HandlerServiceRole901E6E43"
+   ]
+  },
+  "StaticSiteS3Deployment595CCC9A": {
+   "Type": "Custom::SSTBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "StaticSiteS3HandlerBDD0DB92",
+      "Arn"
+     ]
+    },
+    "Sources": [
+     {
+      "BucketName": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+      "ObjectKey": "1e58a6cedbc747b038f3881a7056403e0e691ff07f20590aaa269ecd5c1c8aab.zip"
+     }
+    ],
+    "DestinationBucketName": {
+     "Ref": "StaticSiteS3Bucket435057DB"
+    },
+    "Filenames": {
+     "BucketName": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "ObjectKey": "0f639c07d5388733918ee5f8f7327fec2ab50dc3e855ff61934e7895aa655165.0f639c07d5388733918ee5f8f7327fec2ab50dc3e855ff61934e7895aa655165"
+    },
+    "FileOptions": [
+     [
+      "--exclude",
+      "*",
+      "--include",
+      "*.html",
+      "--cache-control",
+      "max-age=0,no-cache,no-store,must-revalidate"
+     ],
+     [
+      "--exclude",
+      "*",
+      "--include",
+      "*.js",
+      "--include",
+      "*.css",
+      "--cache-control",
+      "max-age=31536000,public,immutable"
+     ]
+    ],
+    "ReplaceValues": []
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "StaticSiteCloudFrontFunctionC61FB1AF": {
+   "Type": "AWS::CloudFront::Function",
+   "Properties": {
+    "FunctionCode": "\nfunction handler(event) {\n  var request = event.request;\n  var uri = request.uri;\n  \n  if (uri.endsWith(\"/\")) {\n    request.uri += \"index.html\";\n  } else if (!uri.split(\"/\").pop().includes(\".\")) {\n    request.uri += \".html\";\n  }\n\n  return request;\n}\n          ",
+    "FunctionConfig": {
+     "Comment": "eu-central-1devtaroxevaluationapicSiteCloudFrontFunction70495E47",
+     "Runtime": "cloudfront-js-1.0"
+    },
+    "Name": "eu-central-1devtaroxevaluationapicSiteCloudFrontFunction70495E47",
+    "AutoPublish": true
+   }
+  },
+  "StaticSiteDistributionOrigin1S3Origin6F73794F": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Identity for devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F"
+    }
+   },
+   "DependsOn": [
+    "StaticSiteS3Deployment595CCC9A"
+   ]
+  },
+  "StaticSiteDistribution90D303F1": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "Aliases": [
+      "n.mantaro.dev"
+     ],
+     "CustomErrorResponses": [
+      {
+       "ErrorCode": 403,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      },
+      {
+       "ErrorCode": 404,
+       "ResponseCode": 200,
+       "ResponsePagePath": "/index.html"
+      }
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "FunctionAssociations": [
+       {
+        "EventType": "viewer-request",
+        "FunctionARN": {
+         "Fn::GetAtt": [
+          "StaticSiteCloudFrontFunctionC61FB1AF",
+          "FunctionARN"
+         ]
+        }
+       }
+      ],
+      "TargetOriginId": "devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F",
+      "ViewerProtocolPolicy": "redirect-to-https"
+     },
+     "DefaultRootObject": "index.html",
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "StaticSiteS3Bucket435057DB",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "devtaroxevaluationappTaroxEvaluationStaticSiteDistributionOrigin128A2CD9F",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "StaticSiteDistributionOrigin1S3Origin6F73794F"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "ViewerCertificate": {
+      "AcmCertificateArn": {
+       "Fn::GetAtt": [
+        "StaticSiteCertificateCertificateRequestorResourceC455335E",
+        "Arn"
+       ]
+      },
+      "MinimumProtocolVersion": "TLSv1.2_2021",
+      "SslSupportMethod": "sni-only"
+     }
+    },
+    "Tags": [
+     {
+      "Key": "sst:app",
+      "Value": "tarox-evaluation-app"
+     },
+     {
+      "Key": "sst:stage",
+      "Value": "dev"
+     }
+    ]
+   },
+   "DependsOn": [
+    "StaticSiteS3Deployment595CCC9A"
+   ]
+  },
+  "StaticSiteCloudFrontInvalidatorPolicy208319DD": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "cloudfront:GetInvalidation",
+        "cloudfront:CreateInvalidation"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":cloudfront::559763560016:distribution/",
+          {
+           "Ref": "StaticSiteDistribution90D303F1"
+          }
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "StaticSiteCloudFrontInvalidatorPolicy208319DD",
+    "Roles": [
+     {
+      "Ref": "CustomResourceHandlerServiceRole41AEC181"
+     }
+    ]
+   }
+  },
+  "StaticSiteCloudFrontInvalidator378FAE0B": {
+   "Type": "Custom::CloudFrontInvalidator",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomResourceHandlerE8FB56BA",
+      "Arn"
+     ]
+    },
+    "assetsHash": "2ff761a57aaa33b35dfbf8177be68bc8",
+    "distributionId": {
+     "Ref": "StaticSiteDistribution90D303F1"
+    },
+    "paths": [
+     "/*"
+    ],
+    "waitForInvalidation": false
+   },
+   "DependsOn": [
+    "StaticSiteCloudFrontInvalidatorPolicy208319DD",
+    "StaticSiteDistributionOrigin1S3Origin6F73794F",
+    "StaticSiteDistribution90D303F1"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete"
+  },
+  "StaticSiteAliasRecord4F27A661": {
+   "Type": "AWS::Route53::RecordSet",
+   "Properties": {
+    "Name": "n.mantaro.dev.",
+    "Type": "A",
+    "AliasTarget": {
+     "DNSName": {
+      "Fn::GetAtt": [
+       "StaticSiteDistribution90D303F1",
+       "DomainName"
+      ]
+     },
+     "HostedZoneId": {
+      "Fn::FindInMap": [
+       "AWSCloudFrontPartitionHostedZoneIdMap",
+       {
+        "Ref": "AWS::Partition"
+       },
+       "zoneId"
+      ]
+     }
+    },
+    "HostedZoneId": "Z00814143B9EJIERPRYV9"
+   }
+  },
+  "StaticSiteAliasRecordAAAA1D4536B8": {
+   "Type": "AWS::Route53::RecordSet",
+   "Properties": {
+    "Name": "n.mantaro.dev.",
+    "Type": "AAAA",
+    "AliasTarget": {
+     "DNSName": {
+      "Fn::GetAtt": [
+       "StaticSiteDistribution90D303F1",
+       "DomainName"
+      ]
+     },
+     "HostedZoneId": {
+      "Fn::FindInMap": [
+       "AWSCloudFrontPartitionHostedZoneIdMap",
+       {
+        "Ref": "AWS::Partition"
+       },
+       "zoneId"
+      ]
+     }
+    },
+    "HostedZoneId": "Z00814143B9EJIERPRYV9"
+   }
+  },
+  "StaticSiteParameterurl8BC47FFD": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": "https://n.mantaro.dev",
+    "Name": "/sst/tarox-evaluation-app/dev/StaticSite/StaticSite/url",
+    "Tags": {
+     "sst:app": "tarox-evaluation-app",
+     "sst:stage": "dev"
+    }
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-559763560016-eu-central-1",
+     "S3Key": "2332a8953f2d92ebffdc01cf20d5a2fb5bf2ef29764cda4186f01c55edee8c73.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs14.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "StaticSiteS3Bucket435057DB"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ]
+  }
+ },
+ "Mappings": {
+  "AWSCloudFrontPartitionHostedZoneIdMap": {
+   "aws": {
+    "zoneId": "Z2FDTNDATAQYW2"
+   },
+   "aws-cn": {
+    "zoneId": "Z3RFFRIM2A3IF5"
+   }
+  }
+ },
+ "Outputs": {
+  "SSTMetadata": {
+   "Value": "{\"app\":\"tarox-evaluation-app\",\"stage\":\"dev\",\"version\":\"2.3.0\",\"metadata\":[{\"id\":\"StaticSite\",\"addr\":\"c88af1f8a0c5203f4447c2ef1160b0091749d42a55\",\"stack\":\"dev-tarox-evaluation-app-TaroxEvaluation\",\"type\":\"StaticSite\",\"data\":{\"path\":\".\",\"environment\":{},\"customDomainUrl\":\"https://n.mantaro.dev\"}}]}"
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
